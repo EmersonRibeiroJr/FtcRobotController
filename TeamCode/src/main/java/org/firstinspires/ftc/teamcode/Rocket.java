@@ -36,12 +36,9 @@ public class Rocket extends LinearOpMode {
         while (opModeIsActive()){
             double max;
 
-
             double axial =  -gamepad1.left_stick_y;
             double lateral = gamepad1.left_stick_x;
             double yaw =     gamepad1.right_stick_x;
-
-
 
 
             double leftFrontPower =  axial + lateral + yaw;
@@ -72,8 +69,6 @@ public class Rocket extends LinearOpMode {
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.update();
-
-
 
 
         }
