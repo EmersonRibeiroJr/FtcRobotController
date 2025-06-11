@@ -14,7 +14,7 @@ public class RocketAutonomo extends LinearOpMode {
     private DcMotor BR3 = null;
     private ElapsedTime runtime = new ElapsedTime();
     static final double CONTS_PER_MORTOR_REV     = 1440;
-    static final double DRIVE_GEAR_REDUCTION     = 1.0;
+    static final double DRIVE_GEAR_REDUCTION     = 20.0;
     static final double WHEEL_DIAMETER_INCHES    = 4.0;
     static final double COUNTS_PER_INCH          = (CONTS_PER_MORTOR_REV * DRIVE_GEAR_REDUCTION)/(WHEEL_DIAMETER_INCHES * 3.1415);
     static final double DRIVE_SPEED              = 0.6;
@@ -59,7 +59,7 @@ public class RocketAutonomo extends LinearOpMode {
         waitForStart();
 
         enconderDrive(DRIVE_SPEED, 5,5,5,5,55.0);
-
+        enconderDrive(DRIVE_SPEED, -5,-5,-5,-5,55.0);
 
 
         telemetry.addData("Path", "Complete");
