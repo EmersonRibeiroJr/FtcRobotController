@@ -13,9 +13,9 @@ public class RocketAutonomo extends LinearOpMode {
     private DcMotor BL2 = null;
     private DcMotor BR3 = null;
     private ElapsedTime runtime = new ElapsedTime();
-    static final double CONTS_PER_MORTOR_REV     = 1440;
-    static final double DRIVE_GEAR_REDUCTION     = 20.0;
-    static final double WHEEL_DIAMETER_INCHES    = 4.0;
+    static final double CONTS_PER_MORTOR_REV     = 288; // por exemplo: codificador de motor HD REX
+    static final double DRIVE_GEAR_REDUCTION     = 20.0; // 20:1 engrenagens externas.
+    static final double WHEEL_DIAMETER_INCHES    = 3.78; // Para calcular a circunferência
     static final double COUNTS_PER_INCH          = (CONTS_PER_MORTOR_REV * DRIVE_GEAR_REDUCTION)/(WHEEL_DIAMETER_INCHES * 3.1415);
     static final double DRIVE_SPEED              = 0.6;
     static final double TURN_SPEED               = 0.5;
@@ -49,7 +49,7 @@ public class RocketAutonomo extends LinearOpMode {
         BL2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BR3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        telemetry.addData("Starting at", "%7d :%7d",
+        telemetry.addData("Começando em", "%7d :%7d :%7d :%7d",
                         FL0.getCurrentPosition(),
                         FR1.getCurrentPosition(),
                         BL2.getCurrentPosition(),
@@ -58,11 +58,13 @@ public class RocketAutonomo extends LinearOpMode {
 
         waitForStart();
 
-        enconderDrive(DRIVE_SPEED, 5,5,5,5,55.0);
-        enconderDrive(DRIVE_SPEED, -5,-5,-5,-5,55.0);
+        //Caminho a ser Realizado
+        enconderDrive(DRIVE_SPEED, 5,5,5,5,5.0);
+        enconderDrive(DRIVE_SPEED, -4,-4,-4,-4,5.0);
+        enconderDrive(TURN_SPEED,2,2,2,2,5.0);
 
 
-        telemetry.addData("Path", "Complete");
+        telemetry.addData("Caminho", "Completo");
         telemetry.update();
 
     }
@@ -122,8 +124,8 @@ public class RocketAutonomo extends LinearOpMode {
                     (FL0.isBusy() && FR1.isBusy() && BL2.isBusy() && BR3.isBusy())){
 
 
-                telemetry.addData("Running to", " %7d :%7d", newFLTarget, newFRTarget, newBLTarget, newBRTarget);
-                telemetry.addData("Currently at", " at %7d :%7d",
+                telemetry.addData("Correndo para", " %7d :%7d :%7d :%7d", newFLTarget, newFRTarget, newBLTarget, newBRTarget);
+                telemetry.addData("Atualmente em", " at %7d :%7d :%7d :%7d",
                         FL0.getCurrentPosition(), FR1.getCurrentPosition(), BL2.getCurrentPosition(), BR3.getCurrentPosition());
                 telemetry.update();
             }
