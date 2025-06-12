@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "RocketAutonomo", group = "Robot")
@@ -13,9 +14,9 @@ public class RocketAutonomo extends LinearOpMode {
     private DcMotor BL2 = null;
     private DcMotor BR3 = null;
     private ElapsedTime runtime = new ElapsedTime();
-    static final double CONTS_PER_MORTOR_REV     = 288; // por exemplo: codificador de motor HD REX
+    static final double CONTS_PER_MORTOR_REV     = 28; // por exemplo: codificador de motor HD REX
     static final double DRIVE_GEAR_REDUCTION     = 20.0; // 20:1 engrenagens externas.
-    static final double WHEEL_DIAMETER_INCHES    = 3.78; // Para calcular a circunferência
+    static final double WHEEL_DIAMETER_INCHES    = 2.99; // Para calcular a circunferência roda preta 2.99 roda amarela 3.78
     static final double COUNTS_PER_INCH          = (CONTS_PER_MORTOR_REV * DRIVE_GEAR_REDUCTION)/(WHEEL_DIAMETER_INCHES * 3.1415);
     static final double DRIVE_SPEED              = 0.6;
     static final double TURN_SPEED               = 0.5;
@@ -32,10 +33,10 @@ public class RocketAutonomo extends LinearOpMode {
         // Para avançar, a maioria dos robôs precisa que o motor de um lado esteja invertido, pois os eixos apontam em direções opostas.
         // Quando executado, este OpMode deve fazer com que ambos os motores avancem. Portanto, ajuste essas duas linhas com base no seu primeiro teste de direção.
         // Observação: As configurações aqui pressupõem acionamento direto nas rodas esquerda e direita. Redução de marcha ou acionamentos de 90 graus podem exigir inversões de direção.
-        FL0.setDirection(DcMotor.Direction.REVERSE);
-        FR1.setDirection(DcMotor.Direction.FORWARD);
-        BL2.setDirection(DcMotor.Direction.REVERSE);
-        BR3.setDirection(DcMotor.Direction.FORWARD);
+        FL0.setDirection(DcMotor.Direction.FORWARD);
+        FR1.setDirection(DcMotor.Direction.REVERSE);
+        BL2.setDirection(DcMotor.Direction.FORWARD);
+        BR3.setDirection(DcMotor.Direction.REVERSE);
 
 
         FL0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -49,7 +50,7 @@ public class RocketAutonomo extends LinearOpMode {
         BL2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BR3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        telemetry.addData("Começando em", "%7d :%7d :%7d :%7d",
+        telemetry.addData("Começando em", "FL0:%7d FR1:%7d BL2:%7d BR3:%7d",
                         FL0.getCurrentPosition(),
                         FR1.getCurrentPosition(),
                         BL2.getCurrentPosition(),
@@ -59,10 +60,9 @@ public class RocketAutonomo extends LinearOpMode {
         waitForStart();
 
         //Caminho a ser Realizado
-        enconderDrive(DRIVE_SPEED, 5,5,5,5,5.0);
-        enconderDrive(DRIVE_SPEED, -4,-4,-4,-4,5.0);
-        enconderDrive(TURN_SPEED,2,2,2,2,5.0);
-
+        enconderDrive(DRIVE_SPEED, 20,20,20,20,5.0);
+        enconderDrive(DRIVE_SPEED, -15,-15,-15,-15,5.0);
+        enconderDrive(TURN_SPEED,10,-10,10,-10,5.0);
 
         telemetry.addData("Caminho", "Completo");
         telemetry.update();
@@ -91,10 +91,10 @@ public class RocketAutonomo extends LinearOpMode {
         if (opModeIsActive()){
 
             // Determina a nova posição alvo e passa para o controlador do motor
-            newFLTarget = FL0.getTargetPosition() + (int)(FLInches * COUNTS_PER_INCH);
-            newFRTarget = FR1.getTargetPosition() + (int)(FRInches * COUNTS_PER_INCH);
-            newBLTarget = BL2.getTargetPosition() + (int)(BLInches * COUNTS_PER_INCH);
-            newBRTarget = BR3.getTargetPosition() + (int)(BRInches * COUNTS_PER_INCH);
+            newFLTarget = FL0.getCurrentPosition() + (int)(FLInches * COUNTS_PER_INCH);
+            newFRTarget = FR1.getCurrentPosition() + (int)(FRInches * COUNTS_PER_INCH);
+            newBLTarget = BL2.getCurrentPosition() + (int)(BLInches * COUNTS_PER_INCH);
+            newBRTarget = BR3.getCurrentPosition() + (int)(BRInches * COUNTS_PER_INCH);
             FL0.setTargetPosition(newFLTarget);
             FR1.setTargetPosition(newFRTarget);
             BL2.setTargetPosition(newBLTarget);
@@ -123,9 +123,9 @@ public class RocketAutonomo extends LinearOpMode {
                     (runtime.seconds() < timeoutS) &&
                     (FL0.isBusy() && FR1.isBusy() && BL2.isBusy() && BR3.isBusy())){
 
-
-                telemetry.addData("Correndo para", " %7d :%7d :%7d :%7d", newFLTarget, newFRTarget, newBLTarget, newBRTarget);
-                telemetry.addData("Atualmente em", " at %7d :%7d :%7d :%7d",
+                telemetry.addData("Status", "Run time: " + runtime.toString());
+                telemetry.addData("Correndo para", "FL:%7d FR:%7d BL:%7d BR:%7d", newFLTarget, newFRTarget, newBLTarget, newBRTarget);
+                telemetry.addData("Atualmente em", " FL:%7d FR:%7d BL:%7d BR:%7d",
                         FL0.getCurrentPosition(), FR1.getCurrentPosition(), BL2.getCurrentPosition(), BR3.getCurrentPosition());
                 telemetry.update();
             }
@@ -145,13 +145,5 @@ public class RocketAutonomo extends LinearOpMode {
             sleep(250);
 
         }
-
-
-
-
-
     }
-
-
-
 }
