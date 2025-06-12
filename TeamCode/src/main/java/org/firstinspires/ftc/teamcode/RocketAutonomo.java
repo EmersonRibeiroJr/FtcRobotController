@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "RocketAutonomo", group = "Robot")
@@ -18,8 +17,8 @@ public class RocketAutonomo extends LinearOpMode {
     static final double DRIVE_GEAR_REDUCTION     = 20.0; // 20:1 engrenagens externas.
     static final double WHEEL_DIAMETER_INCHES    = 2.99; // Para calcular a circunferência roda preta 2.99 roda amarela 3.78
     static final double COUNTS_PER_INCH          = (CONTS_PER_MORTOR_REV * DRIVE_GEAR_REDUCTION)/(WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double DRIVE_SPEED              = 0.6;
-    static final double TURN_SPEED               = 0.5;
+    static final double DRIVE_SPEED              = 0.8;
+    static final double TURN_SPEED               = 0.7;
 
     @Override
     public void runOpMode(){
@@ -50,7 +49,7 @@ public class RocketAutonomo extends LinearOpMode {
         BL2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BR3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        telemetry.addData("Começando em", "FL0:%7d FR1:%7d BL2:%7d BR3:%7d",
+        telemetry.addData("Começando em", "FL:%7d FR:%7d BL:%7d BR:%7d",
                         FL0.getCurrentPosition(),
                         FR1.getCurrentPosition(),
                         BL2.getCurrentPosition(),
@@ -60,10 +59,11 @@ public class RocketAutonomo extends LinearOpMode {
         waitForStart();
 
         //Caminho a ser Realizado
-        enconderDrive(DRIVE_SPEED, 20,20,20,20,5.0);
-        enconderDrive(DRIVE_SPEED, -15,-15,-15,-15,5.0);
-        enconderDrive(TURN_SPEED,10,-10,10,-10,5.0);
+        enconderDrive(DRIVE_SPEED, 50,50,50,50,5.0);
+        enconderDrive(TURN_SPEED,-18,18,-18,18,5.0);
 
+        enconderDrive(TURN_SPEED,18,-18,18,-18,5.0);
+        enconderDrive(DRIVE_SPEED, -50,-50,-50,-50,5.0);
         telemetry.addData("Caminho", "Completo");
         telemetry.update();
 
