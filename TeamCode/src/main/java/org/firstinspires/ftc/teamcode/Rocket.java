@@ -15,6 +15,12 @@ public class Rocket extends LinearOpMode {
     private DcMotor BL2 = null;
     private DcMotor BR3 = null;
 
+    private DcMotor RC1 = null;
+
+    private DcMotor BH0 = null;
+
+
+
     public void runOpMode(){
 
         FL0 = hardwareMap.get(DcMotor.class, "FL0");
@@ -26,6 +32,9 @@ public class Rocket extends LinearOpMode {
         BL2.setDirection(DcMotorSimple.Direction.FORWARD);
         FR1.setDirection(DcMotorSimple.Direction.REVERSE);
         BR3.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        RC1 = hardwareMap.get(DcMotor.class, "RC1");
+        BH0 = hardwareMap.get(DcMotor.class, "BH0");
 
         telemetry.addData("Status", "Inicio");
         telemetry.update();
@@ -63,6 +72,21 @@ public class Rocket extends LinearOpMode {
             FR1.setPower(rightFrontPower);
             BL2.setPower(leftBackPower);
             BR3.setPower(rightBackPower);
+
+            //Controle do braço
+            if(gamepad1.right_bumper){
+                RC1.setPower(-1);
+                sleep(100);
+                RC1.setPower(0);
+            }
+            if(gamepad1.left_bumper){
+                RC1.setPower(1);
+                sleep(100);
+                RC1.setPower(0);
+
+            }
+
+            BH0.setPower(-gamepad1.right_stick_y);
 
 
             telemetry.addData("Status", "Run time: " + runtime.toString());
