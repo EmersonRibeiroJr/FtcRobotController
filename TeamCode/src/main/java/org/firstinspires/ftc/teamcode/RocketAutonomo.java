@@ -61,7 +61,6 @@ public class RocketAutonomo extends LinearOpMode {
         //Caminho a ser Realizado
         enconderDrive(DRIVE_SPEED, 50,50,50,50,5.0);
         enconderDrive(TURN_SPEED,-18,18,-18,18,5.0);
-
         enconderDrive(TURN_SPEED,18,-18,18,-18,5.0);
         enconderDrive(DRIVE_SPEED, -50,-50,-50,-50,5.0);
         telemetry.addData("Caminho", "Completo");
