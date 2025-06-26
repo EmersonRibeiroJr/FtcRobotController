@@ -6,26 +6,36 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "RocketAutonomo", group = "Robot")
+@Autonomous(name = "AutonomoOdometroTest", group = "Robot")
 @Disabled
-public class RocketAutonomo extends LinearOpMode {
+public class AutonomoOdometroTest extends LinearOpMode {
 
+    //Declaração dos motores
     private DcMotor FL0 = null;
     private DcMotor FR1 = null;
     private DcMotor BL2 = null;
     private DcMotor BR3 = null;
+
+    //Declarações de variaves para odometria
+    private DcMotor verticalLeft;
+    private DcMotor verticalRight;
+    private DcMotor horizontal;
+    OdometryGlobalPositionUpdater odometry;
+
+
+    //Declaração de variaveis para movimentação do robô
     private ElapsedTime runtime = new ElapsedTime();
-    static final double CONTS_PER_MORTOR_REV     = 28; // por exemplo: codificador de motor HD REX
+    static final double CONTS_PER_MOTOR_REV     = 28; // por exemplo: codificador de motor HD REX
     static final double DRIVE_GEAR_REDUCTION     = 20.0; // 20:1 engrenagens externas.
     static final double WHEEL_DIAMETER_INCHES    = 3.78; // Para calcular a circunferência roda preta 2.99 roda amarela 3.78
-    static final double COUNTS_PER_INCH          = (CONTS_PER_MORTOR_REV * DRIVE_GEAR_REDUCTION)/(WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double COUNTS_PER_INCH          = (CONTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION)/(WHEEL_DIAMETER_INCHES * 3.1415);
     static final double DRIVE_SPEED              = 0.8;
     static final double TURN_SPEED               = 0.7;
 
     @Override
     public void runOpMode(){
 
-        // Inicializa as variáveis do sistema de acionamento.
+        // Inicializa as variáveis do sistema de movimento.
         FL0 = hardwareMap.get(DcMotor.class,"FL0");
         FR1 = hardwareMap.get(DcMotor.class,"FR1");
         BL2 = hardwareMap.get(DcMotor.class,"BL2");
@@ -51,24 +61,54 @@ public class RocketAutonomo extends LinearOpMode {
         BL2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BR3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        // Mapeamanto dos Pods de odometria e Inicialização
+        verticalLeft  = hardwareMap.get(DcMotor.class, "leftPod");
+        verticalRight = hardwareMap.get(DcMotor.class, "rightPod");
+        horizontal    = hardwareMap.get(DcMotor.class, "rearPod");
+
+        //Resetar odometros
+        verticalLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        verticalRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        horizontal.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Iniciar os encoder sem codificar
+        verticalLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        verticalRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        horizontal.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        odometry = new OdometryGlobalPositionUpdater(verticalLeft, verticalRight, horizontal, COUNTS_PER_INCH);
+        Thread positionTread = new Thread(odometry);
+        positionTread.start();
+
         telemetry.addData("Começando em", "FL:%7d FR:%7d BL:%7d BR:%7d",
-                        FL0.getCurrentPosition(),
-                        FR1.getCurrentPosition(),
-                        BL2.getCurrentPosition(),
-                        BR3.getCurrentPosition());
+                FL0.getCurrentPosition(),
+                FR1.getCurrentPosition(),
+                BL2.getCurrentPosition(),
+                BR3.getCurrentPosition());
         telemetry.update();
 
         waitForStart();
 
         //Caminho a ser Realizado
-        enconderDrive(DRIVE_SPEED, 50,50,50,50,5.0);
-        enconderDrive(TURN_SPEED,-18,18,-18,18,5.0);
-        enconderDrive(TURN_SPEED,18,-18,18,-18,5.0);
-        enconderDrive(DRIVE_SPEED, -50,-50,-50,-50,5.0);
+        encoderDrive(DRIVE_SPEED, 50,50,50,50,5.0);
+        encoderDrive(TURN_SPEED,-18,18,-18,18,5.0);
+        encoderDrive(TURN_SPEED,18,-18,18,-18,5.0);
+        encoderDrive(DRIVE_SPEED, -50,-50,-50,-50,5.0);
         telemetry.addData("Caminho", "Completo");
         telemetry.update();
 
+        while (opModeIsActive()){
+            telemetry.addData("X (in)", odometry.getX());
+            telemetry.addData("Y (in)", odometry.getY());
+            telemetry.addData("Heading (rad)", odometry.getOrientation());
+            telemetry.update();
+        }
+
+        positionTread.interrupt();
+
+
     }
+
     /*
      * Metodo para realizar um movimento relativo, com base nas contagens do encoder.
      * Os encoders não são reiniciados, pois o movimento é baseado na posição atual.
@@ -77,7 +117,7 @@ public class RocketAutonomo extends LinearOpMode {
      * 2) O tempo de movimento se esgotar
      * 3) O driver interrompe a execução do OpMode.
      */
-    public void enconderDrive(double speed,
+    public void encoderDrive(double speed,
                               double FLInches,
                               double FRInches,
                               double BLInches,

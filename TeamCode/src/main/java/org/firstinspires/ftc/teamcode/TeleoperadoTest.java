@@ -7,9 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="Rocket", group="Linear OpMode")
-@Disabled
-public class Rocket extends LinearOpMode {
+@TeleOp(name="TeleoperadoTest", group="Linear OpMode")
+public class TeleoperadoTest extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor FL0 = null;
     private DcMotor FR1 = null;
