@@ -14,7 +14,7 @@ public class RocketAutonomo extends LinearOpMode {
     private DcMotor FR1 = null;
     private DcMotor BL2 = null;
     private DcMotor BR3 = null;
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
     static final double CONTS_PER_MORTOR_REV     = 28; // por exemplo: codificador de motor HD REX
     static final double DRIVE_GEAR_REDUCTION     = 20.0; // 20:1 engrenagens externas.
     static final double WHEEL_DIAMETER_INCHES    = 3.78; // Para calcular a circunferência roda preta 2.99 roda amarela 3.78
