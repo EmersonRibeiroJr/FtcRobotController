@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.TesteOdometro;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,10 +14,10 @@ public class TeleoperadoTest extends LinearOpMode {
     private DcMotor BL2 = null;
     private DcMotor BR3 = null;
 
-    private DcMotor RC1 = null;
+ /*   private DcMotor RC1 = null;
 
     private DcMotor BH0 = null;
-
+*/
 
 
     public void runOpMode(){
@@ -32,10 +31,10 @@ public class TeleoperadoTest extends LinearOpMode {
         BL2.setDirection(DcMotorSimple.Direction.FORWARD);
         FR1.setDirection(DcMotorSimple.Direction.REVERSE);
         BR3.setDirection(DcMotorSimple.Direction.REVERSE);
-
+/*
         RC1 = hardwareMap.get(DcMotor.class, "RC1");
         BH0 = hardwareMap.get(DcMotor.class, "BH0");
-
+*/
         telemetry.addData("Status", "Inicio");
         telemetry.update();
 
@@ -73,7 +72,7 @@ public class TeleoperadoTest extends LinearOpMode {
             BL2.setPower(leftBackPower);
             BR3.setPower(rightBackPower);
 
-            //Controle do braço
+         /*   //Controle do braço
             if(gamepad1.right_bumper){
                 RC1.setPower(-1);
                 sleep(100);
@@ -87,7 +86,7 @@ public class TeleoperadoTest extends LinearOpMode {
             }
 
             BH0.setPower(-gamepad1.right_stick_y);
-
+         */
 
             telemetry.addData("Status", "Run time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);

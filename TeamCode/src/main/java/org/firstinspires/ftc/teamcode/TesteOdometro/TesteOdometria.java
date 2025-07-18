@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.TesteOdometro;
 
 import android.annotation.SuppressLint;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,13 +14,13 @@ public class TesteOdometria extends LinearOpMode {
     private DcMotor leftPod, rightPod, rearPod;
 
     // Constantes de hardware
-    static final double WHEEL_DIAMETER_INCHES = 1.89; // 48mm
+    static final double WHEEL_DIAMETER_INCHES = 1.89; // 48mm DeadWheel
     static final double COUNTS_PER_REV = 8000.0; // 2000 CPR quadratura
     static final double COUNTS_PER_INCH = COUNTS_PER_REV / (Math.PI * WHEEL_DIAMETER_INCHES); // ≈ 1348.4
 
     // Constantes de posição do robô (você precisa calibrar)
     static final double TRACK_WIDTH = 5.9;     // Distância entre left e right pod (polegadas)
-    static final double CENTER_WHEEL_OFFSET = 7; // Offset lateral do rear pod em relação ao centro do robô
+    static final double CENTER_WHEEL_OFFSET = -7; // Offset lateral do rear pod em relação ao centro do robô
 
     // Posição do robô
     double x = 0.0;
